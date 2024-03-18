@@ -135,30 +135,24 @@
             <figure class="card card-product-grid">
                 <div class="img-wrap"> 
                     
-                    <a href="{{ product.get_url }}"><img src="{{product.images.url}}"></a>
+                    <a href="{{ product.get_url}}"><img src="{{product.images.url}}"></a>
                     
                 </div> <!-- img-wrap.// -->
                 <figcaption class="info-wrap">
                     <div class="fix-height">
-                        <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+                        <a href="{{product.get_url}}" class="title"> {{ product.product_name }} </a>
                         <div class="price-wrap mt-2">
-                            <span class="price">${{product.price}}</span>
+                            <span class="price">$ {{ product.price }} </span>
                         </div> <!-- price-wrap.// -->
                     </div>
-            {% if in_cart %}
-<!-- if product in cart -->
-                    <a href="#" class="btn  btn-success"> <span class="text">Added to Cart</span> <i class="fas fa-check"></i>  </a>
+                    <a href="{{product.get_url}}" class="btn  btn-block btn-primary"> View Details  </a>
 
-
-                {% else  %}
-                
+                   
                     <!-- <a href="#" class="btn btn-block btn-primary">Add to Cart </a> -->
-                    <a href="{{ product.get_url }}" class="btn  btn-block btn-primary"> View Details  </a>
 
                 </figcaption>
             </figure>
-        </div> <!-- col.// -->
-                {% endif %}
+        </div> <!-- col.// -->            
         {% endfor %}
     </div> <!-- row end.// -->
     

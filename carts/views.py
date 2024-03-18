@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from store.models import  Product, Variation
 from .models import Cart, CartItem
-from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
+from django.http import HttpResponse
 
 def _cart_id (request):
     cart   =   request.session.session_key
@@ -22,11 +22,11 @@ def add_cart(request,product_id):
                 print(variation)
             except:
                 pass
-            # print(key, value)
-    # color = request.GET['color']
-    # size = request.GET['size']
-    # print(color,size)
-    # return HttpResponse(color + "" + size)
+            print(key, value)
+    color = request.GET['color']
+    size = request.GET['size']
+    #print(color,size)
+    # return HttpResponse(color + " " + size)
     # exit()
 
 
