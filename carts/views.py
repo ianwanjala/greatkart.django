@@ -12,30 +12,31 @@ def _cart_id (request):
     return cart
 
 def add_cart(request,product_id):
+    
+    product=Product.objects.get(id=product_id) # gets the product
+    product_variation=[] #product variatrion getting
     if request.method == 'POST':
         for item in request.POST:
             key = item
             value = request.POST[key]
 
             try:
-                variation = Variation.objects.get(variation_category__iexact=key, variation_value__iexact=value)
-                print(variation)
+                variation = Variation.objects.get(product=product,variation_category__iexact=key, variation_value__iexact=value) #iexact ignores if text is capital or all small
+                product_variation.append(variation)
             except:
                 pass
-            print(key, value)
-    color = request.GET['color']
-    size = request.GET['size']
-    #print(color,size)
+         #   print(key, value)
+    # color = request.GET['color']
+    # size = request.GET['size']
+    # #print(color,size)
     # return HttpResponse(color + " " + size)
     # exit()
 
-
-
-    product=Product.objects.get(id=product_id) # gets the product
     try:
         cart    =    Cart.objects.get(cart_id=_cart_id(request)) # get the cart using cart id using the cart id present in the session
 
     except Cart.DoesNotExist:
+
         cart = Cart.objects.create(
             cart_id = _cart_id(request)
         )
@@ -44,16 +45,26 @@ def add_cart(request,product_id):
 
     try:
         cart_item = CartItem.objects.get(product=product, cart=cart)
+        if len(product_variation)>0:
+            cart_item.variations.clear()
+            for item in product_variation:
+                cart_item.variations.add(item)
         cart_item.quantity += 1 # a.k.a cart_item.quantity= cart_item.quantity + 1
         cart_item.save()
 
     except CartItem.DoesNotExist:
+        
         cart_item = CartItem.objects.create(
 
             product = product,
             quantity =1,
             cart = cart, 
         )
+        if len(product_variation)>0:
+            cart_item.variations.clear()
+
+            for item in product_variation:
+                cart_item.variations.add(item)
 
         cart_item.save() 
     # return HttpResponse(cart_item.quantity) # test response if any
