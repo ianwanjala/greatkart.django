@@ -34,7 +34,7 @@ def add_cart(request,product_id):
     cart.save()
     is_cart_item_exists = CartItem.objects.filter(product=product, cart=cart).exists()
     if is_cart_item_exists:
-        cart_item = CartItem.objects.filter(product=product,  cart=cart)
+        cart_item = CartItem.objects.filter(product=product,cart=cart)
         #we need existing variations db, current variation prodvariation list, itemid from db
         ex_var_list=[]
         id = []
