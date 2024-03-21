@@ -61,5 +61,5 @@ $(document).ready(function() {
 setTimeout(() => {
     $("#message").fadeOut("slow")
     
-}, 1000)
+}, 2000)
 
