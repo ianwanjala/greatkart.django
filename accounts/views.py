@@ -39,7 +39,7 @@ def register(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            messages.success(request, 'Registration Successful.')
+            messages.success(request, 'Thank you for registration, Please check you email for activation link.')
             return redirect('register')
 
     else:
