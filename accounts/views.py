@@ -30,7 +30,7 @@ def register(request):
             #user activation function
             current_site = get_current_site(request)
             mail_subject = 'Please activate your account'
-            message = render_to_string('accounts/account_verification_email.html',{
+            message = render_to_string('/accounts/account_verification_email.html',{
                 'user':user,
                 'domain':current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -39,8 +39,8 @@ def register(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            messages.success(request, 'Thank you for registration, Please check you email for activation link.')
-            return redirect('register')
+            # messages.success(request, 'Thank you for registration, Please check you email for activation link.')
+            return redirect('accounts/login/?command=verification&email='+email)
 
     else:
          form = RegistrationForm()
