@@ -4,6 +4,7 @@ from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 def _cart_id (request):
     cart   =   request.session.session_key
@@ -121,7 +122,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
     }
     return render(request, 'store/cart.html', context)
 
-
+@login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_items=None):
     try:
         tax=0
