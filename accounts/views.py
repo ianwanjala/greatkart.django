@@ -91,7 +91,7 @@ def activate(request, uidb64, token):
 def dashboard (request):
     return render (request, 'accounts/dashboard.html')
 
-@login_required
+#@login_required
 def forgotPassword (request):
     if request.method == 'POST':
         email = request.POST['email']
