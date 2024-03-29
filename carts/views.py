@@ -30,22 +30,11 @@ def add_cart(request,product_id):
                     variation = Variation.objects.get(product=product,variation_category__iexact=key, variation_value__iexact=value) #iexact ignores if text is capital or all small
                     product_variation.append(variation)
                 except ObjectDoesNotExist:
-                    pass
-        try: 
-            cart=       Cart.objects.get(cart_id=_cart_id(request))
-            
-        except Cart.DoesNotExist:
-            cart=       Cart.objects.create(
-                cart_id=    _cart_id(request)
-            )
-        cart.save()
-                
+                    pass             
 
         is_cart_item_exists = CartItem.objects.filter(product=product,user=current_user).exists()
-        print('begin of issue')
         if is_cart_item_exists:
-            print ('end of issue')
-            cart_item = CartItem.objects.filter(product=product, cart=cart)
+            cart_item = CartItem.objects.filter(product=product,user=current_user)
             #we need existing variations db, current variation prodvariation list, itemid from db
             ex_var_list=[]
             id = []
@@ -82,6 +71,7 @@ def add_cart(request,product_id):
                 cart_item.variations.add(*product_variation)
             cart_item.save() 
         return redirect('cart')
+    #user not auth
     else:
         product_variation=[] #product variatrion getting
         if request.method == 'POST':
