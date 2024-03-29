@@ -13,9 +13,14 @@ def _cart_id (request):
     return cart
 
 def add_cart(request,product_id):
+    # #chatgpt logic to solve add error
+    # cart, created = Cart.objects.get_or_create(user=request.user, defaults={})
+    # product = get_object_or_404(Product, id=product_id)
+    # cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, defaults={})
+    
     current_user=request.user    
     product=Product.objects.get(id=product_id) # gets the product
-    if current_user.is_authenticated:            #if user authenticated
+    if current_user.is_authenticated:  
         product_variation=[] #product variatrion getting
         if request.method == 'POST':
             for item in request.POST:
@@ -24,12 +29,23 @@ def add_cart(request,product_id):
                 try:
                     variation = Variation.objects.get(product=product,variation_category__iexact=key, variation_value__iexact=value) #iexact ignores if text is capital or all small
                     product_variation.append(variation)
-                except:
+                except ObjectDoesNotExist:
                     pass
+        try: 
+            cart=       Cart.objects.get(cart_id=_cart_id(request))
+            
+        except Cart.DoesNotExist:
+            cart=       Cart.objects.create(
+                cart_id=    _cart_id(request)
+            )
+        cart.save()
+                
 
         is_cart_item_exists = CartItem.objects.filter(product=product,user=current_user).exists()
+        print('begin of issue')
         if is_cart_item_exists:
-            cart_item = CartItem.objects.filter(product=product,user=current_user)
+            print ('end of issue')
+            cart_item = CartItem.objects.filter(product=product, cart=cart)
             #we need existing variations db, current variation prodvariation list, itemid from db
             ex_var_list=[]
             id = []
@@ -37,6 +53,8 @@ def add_cart(request,product_id):
                 existing_variation = item.variations.all()
                 ex_var_list.append(list(existing_variation))
                 id.append(item.id)
+            print(ex_var_list)
+            print('adding item with variation')
 
             if product_variation in ex_var_list:
                 #increase cart item quantity
