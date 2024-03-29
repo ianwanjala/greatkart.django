@@ -62,12 +62,19 @@ def login (request):
 
         if user is not None:
             try:
+                print('entering try')
                 cart = Cart.objects.get(cart_id=_cart_id(request))
-                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()     
+               # is_cart_item_exists = CartItem.objects.filter(product=product,user=current_user).exists()
+
                 if is_cart_item_exists:
                     cart_item = CartItem.objects.filter(cart=cart)
                     product_variation=[]#crating product variation by cart id for loged in users
+                    print(cart_item)
+
                     for item in cart_item:
+                        item.user=user
+                        item.save()
                         variation=item.variation.all()
                         product_variation.append(list(variation))
                         
