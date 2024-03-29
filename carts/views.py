@@ -11,13 +11,11 @@ def _cart_id (request):
     if not cart:
         cart  =  request.session.create()
     return cart
-
 def add_cart(request,product_id):
     # #chatgpt logic to solve add error
     # cart, created = Cart.objects.get_or_create(user=request.user, defaults={})
     # product = get_object_or_404(Product, id=product_id)
-    # cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, defaults={})
-    
+    # cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, defaults={}) 
     current_user=request.user    
     product=Product.objects.get(id=product_id) # gets the product
     if current_user.is_authenticated:  
@@ -42,9 +40,7 @@ def add_cart(request,product_id):
                 existing_variation = item.variations.all()
                 ex_var_list.append(list(existing_variation))
                 id.append(item.id)
-            print(ex_var_list)
-            print('adding item with variation')
-
+#unable to remove/reduce item in cart while logged in: Doesnotexist at /cart/remove_cart/x/xx/
             if product_variation in ex_var_list:
                 #increase cart item quantity
                 index= ex_var_list.index(product_variation)
