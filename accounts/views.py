@@ -71,7 +71,7 @@ def login (request):
                     for item in cart_item:
                         # item.user=user
                         # item.save()
-                        variation=item.variation.all()
+                        variation=item.variations.all()
                         product_variation.append(list(variation))
                         #get cart items from the user to get his product variations
                     cart_item=CartItem.objects.filter(user=user)#impending indentation change to match prior for
@@ -103,6 +103,7 @@ def login (request):
             auth.login(request, user)
             messages.success(request, 'You are now logged in.')
             return redirect('dashboard')
+        #if user not logged in
         else:
             messages.error(request,'Invalid Credentials')
             return redirect('login')
