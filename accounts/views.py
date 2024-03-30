@@ -115,7 +115,7 @@ def login (request):
                 print('params  ->' , params)
                 return redirect("dashboard")
             except:
-                return redirect(nextPage)
+                return redirect(dashboard)
                 
         #if user not logged in
         else:
