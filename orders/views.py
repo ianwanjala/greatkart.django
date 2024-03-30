@@ -38,6 +38,7 @@ def place_order(request, total=0, quantity=0,):
         if form.is_valid():
             #storing all the billing info inside order table
             data = Order()
+            data.user=current_user
             data.first_name= form.cleaned_data['first_name']
             data.last_name = form.cleaned_data['last_name']
             data.phone= form.cleaned_data['phone']
@@ -52,34 +53,34 @@ def place_order(request, total=0, quantity=0,):
             data.tax= tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-        else:
-            for field, errors in form.errors.items():
-            #  for error in errors:
-                # print(f"{field}: {error}")
-                print(f"{field}: {errors}")
-            # print(form.errors)
-            # return redirect( 'checkout')
+        # else:
+        #     for field, errors in form.errors.items():
+        #       for error in errors:
+        #         # print(f"{field}: {error}")
+        #         print(f"{field}: {errors}")
+        #         print(form.errors)
+        #     return redirect( 'checkout')
 
             
-            #generating order number
-            # yr = int(datetime.date.today().strftime('%Y'))
-            # dt = int(datetime.date.today().strftime('%d'))
-            # mt = int(datetime.date.today().strftime('%m'))
-            # d = datetime.date(yr, mt, dt)
-            # current_date = d.strftime("%Y%m%d")     # 20240305
-            # order_number = current_date + str(data.id)
-            # data.order_number = order_number
-            # data.save()
+            # generating order number
+            yr = int(datetime.date.today().strftime('%Y'))
+            dt = int(datetime.date.today().strftime('%d'))
+            mt = int(datetime.date.today().strftime('%m'))
+            d = datetime.date(yr, mt, dt)
+            current_date = d.strftime("%Y%m%d")     # 20240305
+            order_number = current_date + str(data.id)
+            data.order_number = order_number
+            data.save()
             
 
-            # order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
-            # context = {
-            #     'order': order,
-            #     'cart_items': cart_items,
-            #     'total': total,
-            #     'tax': tax,
-            #     'grand_total': grand_total,
-            # }
+            order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            context = {
+                'order': order,
+                'cart_items': cart_items,
+                'total': total,
+                'tax': tax,
+                'grand_total': grand_total,
+            }
     # return redirect( 'checkout')
     else:
         return redirect ('checkout')
