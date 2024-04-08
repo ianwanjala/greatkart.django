@@ -52,7 +52,7 @@ def register(request):
     context = {
         'form' : form,
     }
-    return render (request, 'accounts/login.html', context )
+    return render (request, 'accounts/register.html', context )
 
 def login (request):
     if request.method == 'POST':
