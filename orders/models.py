@@ -43,12 +43,14 @@ class Order(models.Model):
     is_ordered = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    #functions inside model to avail db data to payments.html function 
 
-    # def full_name(self):
-    #     return "{0} {1}".format(self.first_name, self.last_name)
+    def full_name(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
 
-    # def full_address(self):
-    #     return "{0} {1}".format(self.address_line_1, self.address_line_2)
+    def full_address(self):
+        return "{0} {1}".format(self.address_line_1, self.address_line_2)
 
     def __str__(self):
         return self.first_name
